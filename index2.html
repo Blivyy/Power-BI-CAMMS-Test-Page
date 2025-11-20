@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MAG Assurance Command Centre – Interactive Mockup</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    body {
+      background: radial-gradient(circle at top left, #1b2a4a 0, #050712 55%, #020308 100%);
+      color: #f7f9fc;
+      padding: 24px;
+    }
+    .shell {
+      max-width: 1440px;
+      margin: 0 auto;
+      border-radius: 18px;
+      padding: 18px 22px 24px 22px;
+      background: rgba(4, 10, 24, 0.92);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.65);
+      border: 1px solid rgba(132, 178, 255, 0.25);
+      backdrop-filter: blur(18px);
+    }
+    .header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      gap: 12px;
+    }
+    .title-block h1 {
+      font-size: 24px;
+      letter-spacing: 0.04em;
+    }
+    .title-block p {
+      font-size: 12px;
+      opacity: 0.7;
+      margin-top: 4px;
+    }
+
+    /* Top navigation between mock "pages" */
+    .nav-tabs {
+      display: inline-flex;
+      border-radius: 999px;
+      padding: 3px;
+      background: radial-gradient(circle at top, #19253f, #050915);
+      border: 1px solid rgba(113, 180, 255, 0.5);
+      margin-bottom: 8px;
+      gap: 2px;
+    }
+    .nav-tab {
+      border: none;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 11px;
+      color: #cfd8ff;
+      background: transparent;
+      cursor: pointer;
+      opacity: 0.75;
+    }
+    .nav-tab.active {
+      background: linear-gradient(135deg, #60a5fa, #38bdf8);
+      color: #041118;
+      font-weight: 600;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.7);
+      opacity: 1;
+    }
+
+    .source-toggle {
+      display: inline-flex;
+      border-radius: 999px;
+      padding: 4px;
+      background: radial-gradient(circle at top, #1f335d, #050915);
+      border: 1px solid rgba(113, 180, 255, 0.5);
+    }
+    .source-toggle button {
+      border: none;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 11px;
+      color: #cfd8ff;
+      background: transparent;
+      cursor: pointer;
+      opacity: 0.7;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.18s ease-out;
+    }
+    .source-toggle button.active {
+      background: linear-gradient(135deg, #39e58c, #0bbf74);
+      color: #041118;
+      font-weight: 600;
+      box-shadow: 0 0 16px rgba(38, 219, 132, 0.8);
+      opacity: 1;
+    }
+    .source-toggle span.dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.4);
+    }
+    .source-toggle button.active span.dot {
+      background: #041118;
+    }
+
+    .slicer-row {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin: 10px 0 16px 0;
+    }
+    .pill-slicer {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: rgba(7, 16, 44, 0.96);
+      border: 1px solid rgba(120, 155, 214, 0.6);
+      color: #cfd8ff;
+      cursor: pointer;
+      overflow: visible;
+    }
+    .pill-slicer span.value {
+      opacity: 0.9;
+      font-weight: 500;
+    }
+    .pill-slicer span.label {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 9px;
+      opacity: 0.6;
+    }
+    .pill-slicer svg {
+      width: 14px;
+      height: 14px;
+      opacity: 0.7;
+      flex-shrink: 0;
+    }
+    .pill-slicer.active {
+      border-color: #38bdf8;
+      box-shadow: 0 0 14px rgba(59,130,246,0.75);
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 110%;
+      background: rgba(5, 11, 32, 0.98);
+      border-radius: 12px;
+      border: 1px solid rgba(148, 187, 255, 0.7);
+      padding: 4px 0;
+      z-index: 20;
+      max-height: 230px;
+      overflow-y: auto;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.6);
+    }
+    .pill-slicer.open .dropdown-menu {
+      display: block;
+    }
+    .dropdown-option {
+      padding: 6px 12px;
+      font-size: 11px;
+      opacity: 0.85;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .dropdown-option:hover {
+      background: rgba(55, 65, 194, 0.7);
+      opacity: 1;
+    }
+    .dropdown-option.selected {
+      background: rgba(59,130,246,0.9);
+      opacity: 1;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1.1fr;
+      gap: 16px;
+      margin-top: 8px;
+    }
+    .column {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .section {
+      border-radius: 14px;
+      padding: 12px 14px 14px 14px;
+      background: radial-gradient(circle at top left, rgba(32, 55, 112, 0.85), rgba(9, 16, 36, 0.96));
+      border: 1px solid rgba(121, 172, 255, 0.55);
+    }
+    .section.camm {
+      background: radial-gradient(circle at top right, rgba(19, 56, 107, 0.9), rgba(5, 10, 26, 0.98));
+      border-color: rgba(241, 196, 83, 0.65);
+    }
+    .section.hidden {
+      display: none;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      gap: 6px;
+    }
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(199, 223, 255, 0.28);
+      opacity: 0.9;
+      white-space: nowrap;
+    }
+    .section-badge span.dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+    }
+    .section.tracker .section-badge span.dot {
+      background: #40e0d0;
+    }
+    .section.camm .section-badge span.dot {
+      background: #f8d76a;
+    }
+
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .kpi-card {
+      border-radius: 10px;
+      padding: 8px 10px;
+      background: rgba(3, 8, 20, 0.96);
+      border: 1px solid rgba(121, 172, 255, 0.35);
+      cursor: default;
+    }
+    .kpi-card.positive {
+      border-color: rgba(46, 213, 115, 0.9);
+      box-shadow: 0 0 18px rgba(46, 213, 115, 0.35);
+    }
+    .kpi-card.negative {
+      border-color: rgba(255, 99, 132, 0.9);
+      box-shadow: 0 0 18px rgba(255, 99, 132, 0.3);
+    }
+    .kpi-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      opacity: 0.7;
+      margin-bottom: 4px;
+    }
+    .kpi-main {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+    .kpi-value {
+      font-size: 20px;
+      font-weight: 600;
+    }
+    .kpi-unit {
+      font-size: 11px;
+      opacity: 0.7;
+    }
+    .kpi-footnote {
+      font-size: 9px;
+      opacity: 0.6;
+      margin-top: 3px;
+    }
+
+    .chart-row {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .chart-card {
+      border-radius: 10px;
+      padding: 8px 10px 10px 10px;
+      background: rgba(4, 10, 26, 0.96);
+      border: 1px dashed rgba(132, 178, 255, 0.5);
+      position: relative;
+    }
+    .chart-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.7;
+      margin-bottom: 4px;
+    }
+    .chart-placeholder {
+      border-radius: 8px;
+      border: 1px solid rgba(70, 115, 185, 0.6);
+      height: 96px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Fake line chart */
+    .sparkline {
+      position: absolute;
+      left: 4%;
+      right: 4%;
+      top: 55%;
+      height: 40%;
+      border-bottom: 1px solid rgba(147, 197, 253, 0.5);
+      border-left: 1px solid rgba(147, 197, 253, 0.5);
+    }
+    .sparkline::after {
+      content: "";
+      position: absolute;
+      left: 4%;
+      right: 12%;
+      top: 18%;
+      height: 0;
+      border-top: 2px solid #2ecc71;
+      border-radius: 99px;
+    }
+
+    /* Fake heatmap */
+    .heatmap {
+      position: absolute;
+      inset: 10% 12%;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-auto-rows: 1fr;
+      gap: 2px;
+    }
+    .heatmap div {
+      border-radius: 2px;
+      background: linear-gradient(135deg, #0b4f6c, #01baef);
+      opacity: 0.75;
+    }
+    .heatmap div:nth-child(odd) {
+      opacity: 0.45;
+    }
+
+    /* Fake interactive bar chart */
+    .bar-chart {
+      position: absolute;
+      inset: 10% 6% 10% 10%;
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+    }
+    .bar {
+      flex: 1;
+      border-radius: 4px 4px 0 0;
+      background: linear-gradient(180deg, #22c55e, #15803d);
+      cursor: pointer;
+      opacity: 0.7;
+      position: relative;
+    }
+    .bar::after {
+      content: attr(data-label);
+      position: absolute;
+      bottom: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 8px;
+      opacity: 0.7;
+    }
+    .bar.active {
+      opacity: 1;
+      box-shadow: 0 0 12px rgba(45, 212, 191, 0.9);
+    }
+
+    .bar-info {
+      font-size: 10px;
+      margin-top: 4px;
+      opacity: 0.8;
+    }
+
+    .foot-strip {
+      margin-top: 14px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      opacity: 0.65;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .foot-strip span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #2ecc71;
+    }
+    .legend-dot.red {
+      background: #ff6b81;
+    }
+    .legend-dot.amber {
+      background: #f5c86a;
+    }
+
+    /* Page containers */
+    .page {
+      display: none;
+    }
+    .page.active {
+      display: block;
+    }
+    .page-note {
+      font-size: 11px;
+      opacity: 0.75;
+      margin-bottom: 8px;
+    }
+
+    /* CAMMS full-screen layout */
+    .camm-full {
+      display: none;
+      margin-top: 6px;
+    }
+    .camm-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 16px;
+    }
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+      margin-bottom: 4px;
+      font-size: 10px;
+    }
+    .chip {
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(199, 223, 255, 0.35);
+      background: rgba(3, 10, 30, 0.9);
+      cursor: pointer;
+      opacity: 0.8;
+    }
+    .chip.active {
+      background: linear-gradient(135deg, #f97316, #facc15);
+      border-color: rgba(253, 224, 71, 0.9);
+      color: #111827;
+      opacity: 1;
+    }
+    .camm-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10px;
+      margin-top: 4px;
+    }
+    .camm-table th,
+    .camm-table td {
+      padding: 4px 6px;
+      border-bottom: 1px solid rgba(148, 187, 255, 0.3);
+      text-align: left;
+    }
+    .camm-table th {
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 9px;
+      opacity: 0.7;
+    }
+    .risk-pill {
+      padding: 2px 6px;
+      border-radius: 999px;
+      font-size: 9px;
+    }
+    .risk-low { background:#16a34a33; color:#bbf7d0;}
+    .risk-med { background:#eab30833; color:#fef9c3;}
+    .risk-high { background:#ef444433; color:#fee2e2;}
+    .risk-vhigh { background:#b91c1c66; color:#fee2e2;}
+
+    .muted {
+      opacity: 0.65;
+      font-size: 10px;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 1024px) {
+      .grid,
+      .camm-grid {
+        grid-template-columns: 1fr;
+      }
+      .header-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="header-row">
+      <div class="title-block">
+        <h1>MAG Assurance Command Centre</h1>
+        <p>Unified view of tracker-based actions and CAMMS enterprise risk data</p>
+      </div>
+      <div>
+        <div class="nav-tabs">
+          <button class="nav-tab active" data-page="page-overview">Overview</button>
+          <button class="nav-tab" data-page="page-airport">Airport Detail</button>
+          <button class="nav-tab" data-page="page-trends">Trends</button>
+        </div>
+        <div class="source-toggle" style="margin-top:6px;">
+          <button class="source-btn active" data-mode="tracker"><span class="dot"></span> Tracker View</button>
+          <button class="source-btn" data-mode="camms"><span class="dot"></span> CAMMS View</button>
+          <button class="source-btn" data-mode="combined"><span class="dot"></span> Combined</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="slicer-row">
+      <!-- Airport -->
+      <div class="pill-slicer" data-slicer="airport">
+        <div>
+          <span class="label">Airport</span><br>
+          <span class="value">All (MAN · EMA · STN · CAVU)</span>
+        </div>
+        <svg viewBox="0 0 24 24">
+          <path fill="currentColor" d="M7 10l5 5 5-5H7z" />
+        </svg>
+        <div class="dropdown-menu">
+          <div class="dropdown-option selected">All (MAN · EMA · STN · CAVU)</div>
+          <div class="dropdown-option">MAN – Manchester</div>
+          <div class="dropdown-option">EMA – East Midlands</div>
+          <div class="dropdown-option">STN – London Stansted</div>
+          <div class="dropdown-option">CAVU – Group / Digital</div>
+        </div>
+      </div>
+
+      <!-- Department -->
+      <div class="pill-slicer" data-slicer="dept">
+        <div>
+          <span class="label">Department</span><br>
+          <span class="value">All Functions</span>
+        </div>
+        <svg viewBox="0 0 24 24">
+          <path fill="currentColor" d="M7 10l5 5 5-5H7z" />
+        </svg>
+        <div class="dropdown-menu">
+          <div class="dropdown-option selected">All Functions</div>
+          <div class="dropdown-option">Landside Operations & Car Parks</div>
+          <div class="dropdown-option">Terminal Operations & Customer Experience</div>
+          <div class="dropdown-option">Airfield Operations</div>
+          <div class="dropdown-option">Security</div>
+          <div class="dropdown-option">Engineering & Asset Management</div>
+          <div class="dropdown-option">Fire & Rescue</div>
+          <div class="dropdown-option">Health, Safety & Wellbeing</div>
+          <div class="dropdown-option">Compliance & Assurance</div>
+          <div class="dropdown-option">Resilience & Emergency Planning</div>
+          <div class="dropdown-option">Airline Relations & Commercial</div>
+          <div class="dropdown-option">Retail, F&amp;B & Car Rental</div>
+          <div class="dropdown-option">Cargo & Logistics</div>
+          <div class="dropdown-option">Facilities Management & Cleaning</div>
+          <div class="dropdown-option">IT & Digital / ServiceNow</div>
+          <div class="dropdown-option">Projects & Transformation</div>
+          <div class="dropdown-option">HR & People</div>
+          <div class="dropdown-option">Finance</div>
+          <div class="dropdown-option">Sustainability & Environment</div>
+          <div class="dropdown-option">Legal & Governance</div>
+        </div>
+      </div>
+
+      <!-- Date Range -->
+      <div class="pill-slicer" data-slicer="date">
+        <div>
+          <span class="label">Date Range</span><br>
+          <span class="value">FY26 · Q1–Q2</span>
+        </div>
+        <svg viewBox="0 0 24 24">
+          <path fill="currentColor" d="M7 10l5 5 5-5H7z" />
+        </svg>
+        <div class="dropdown-menu">
+          <div class="dropdown-option">FY23 · Q1</div>
+          <div class="dropdown-option">FY23 · Q2</div>
+          <div class="dropdown-option">FY23 · Q3</div>
+          <div class="dropdown-option">FY23 · Q4</div>
+          <div class="dropdown-option">FY24 · Q1</div>
+          <div class="dropdown-option">FY24 · Q2</div>
+          <div class="dropdown-option">FY24 · Q3</div>
+          <div class="dropdown-option">FY24 · Q4</div>
+          <div class="dropdown-option">FY25 · Q1</div>
+          <div class="dropdown-option">FY25 · Q2</div>
+          <div class="dropdown-option">FY25 · Q3</div>
+          <div class="dropdown-option">FY25 · Q4</div>
+          <div class="dropdown-option selected">FY26 · Q1</div>
+          <div class="dropdown-option">FY26 · Q2</div>
+          <div class="dropdown-option">FY26 · Q3</div>
+          <div class="dropdown-option">FY26 · Q4</div>
+          <div class="dropdown-option">FY27 · Q1</div>
+          <div class="dropdown-option">FY27 · Q2</div>
+          <div class="dropdown-option">FY27 · Q3</div>
+          <div class="dropdown-option">FY27 · Q4</div>
+        </div>
+      </div>
+
+      <!-- Action Status -->
+      <div class="pill-slicer" data-slicer="status">
+        <div>
+          <span class="label">Action Status</span><br>
+          <span class="value">All (Open · In Progress · Paused · Closed)</span>
+        </div>
+        <svg viewBox="0 0 24 24">
+          <path fill="currentColor" d="M7 10l5 5 5-5H7z" />
+        </svg>
+        <div class="dropdown-menu">
+          <div class="dropdown-option selected">All (Open · In Progress · Paused · Closed)</div>
+          <div class="dropdown-option">Open</div>
+          <div class="dropdown-option">In Progress</div>
+          <div class="dropdown-option">Paused</div>
+          <div class="dropdown-option">Closed</div>
+        </div>
+      </div>
+
+      <!-- Risk Tier -->
+      <div class="pill-slicer" data-slicer="risk">
+        <div>
+          <span class="label">Risk Tier</span><br>
+          <span class="value">Critical · High · Medium</span>
+        </div>
+        <svg viewBox="0 0 24 24">
+          <path fill="currentColor" d="M7 10l5 5 5-5H7z" />
+        </svg>
+        <div class="dropdown-menu">
+          <div class="dropdown-option selected">All Tiers (Low · Medium · High · Very High)</div>
+          <div class="dropdown-option">Low</div>
+          <div class="dropdown-option">Medium</div>
+          <div class="dropdown-option">High</div>
+          <div class="dropdown-option">Very High</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 1: OVERVIEW (split brain layout) -->
+    <div id="page-overview" class="page active">
+      <p class="page-note">Overview page: use the source toggle to switch between Tracker, CAMMS or Combined layout. Dropdowns above behave like slicers, but for this mockup they only change labels.</p>
+
+      <!-- Split layout container -->
+      <div id="split-layout">
+        <div class="grid">
+          <!-- LEFT: Tracker / Excel side -->
+          <div class="column">
+            <div class="section tracker" data-source="tracker">
+              <div class="section-header">
+                <div class="section-title">Operational Trackers</div>
+                <div class="section-badge">
+                  <span class="dot"></span>
+                  <span>Excel · SharePoint</span>
+                </div>
+              </div>
+              <div class="kpi-row">
+                <div class="kpi-card negative">
+                  <div class="kpi-label">Overdue Actions</div>
+                  <div class="kpi-main">
+                    <div class="kpi-value">14</div>
+                    <div class="kpi-unit">items</div>
+                  </div>
+                  <div class="kpi-footnote">Across all airports · last 90 days</div>
+                </div>
+                <div class="kpi-card positive">
+                  <div class="kpi-label">Completion Rate</div>
+                  <div class="kpi-main">
+                    <div class="kpi-value">89</div>
+                    <div class="kpi-unit">%</div>
+                  </div>
+                  <div class="kpi-footnote">On-time closure vs. target SLA</div>
+                </div>
+                <div class="kpi-card">
+                  <div class="kpi-label">Avg. Days Open</div>
+                  <div class="kpi-main">
+                    <div class="kpi-value">12</div>
+                    <div class="kpi-unit">days</div>
+                  </div>
+                  <div class="kpi-footnote">Median age of live actions</div>
+                </div>
+              </div>
+
+              <div class="chart-row">
+                <div class="chart-card">
+                  <div class="chart-title">Manual Review Trend</div>
+                  <div class="chart-placeholder">
+                    <div class="sparkline"></div>
+                  </div>
+                </div>
+                <div class="chart-card">
+                  <div class="chart-title">Action Age Breakdown</div>
+                  <div class="chart-placeholder">
+                    <div class="heatmap">
+                      <div></div><div></div><div></div><div></div><div></div>
+                      <div></div><div></div><div></div><div></div><div></div>
+                      <div></div><div></div><div></div><div></div><div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: CAMMS side (summary within combined view) -->
+          <div class="column">
+            <div class="section camm" data-source="camms">
+              <div class="section-header">
+                <div class="section-title">Enterprise Assurance (CAMMS)</div>
+                <div class="section-badge">
+                  <span class="dot"></span>
+                  <span>System of Record</span>
+                </div>
+              </div>
+              <div class="kpi-row">
+                <div class="kpi-card negative">
+                  <div class="kpi-label">Critical Risks</div>
+                  <div class="kpi-main">
+                    <div class="kpi-value">3</div>
+                    <div class="kpi-unit">open</div>
+                  </div>
+                  <div class="kpi-footnote">Above risk appetite threshold</div>
+                </div>
+                <div class="kpi-card">
+                  <div class="kpi-label">Controls Tested</div>
+                  <div class="kpi-main">
+                    <div class="kpi-value">72</div>
+                    <div class="kpi-unit">this FY</div>
+                  </div>
+                  <div class="kpi-footnote">Includes assurance & audit activity</div>
+                </div>
+                <div class="kpi-card positive">
+                  <div class="kpi-label">Policy Adherence</div>
+                  <div class="kpi-main">
+                    <div class="kpi-value">94</div>
+                    <div class="kpi-unit">%</div>
+                  </div>
+                  <div class="kpi-footnote">Weighted by risk tier</div>
+                </div>
+              </div>
+
+              <div class="chart-row">
+                <div class="chart-card">
+                  <div class="chart-title">Risk Heatmap by Department</div>
+                  <div class="chart-placeholder">
+                    <div class="heatmap">
+                      <div></div><div></div><div></div><div></div><div></div>
+                      <div></div><div></div><div></div><div></div><div></div>
+                      <div></div><div></div><div></div><div></div><div></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="chart-card">
+                  <div class="chart-title">Unified Action Status (click bars)</div>
+                  <div class="chart-placeholder">
+                    <div class="bar-chart">
+                      <div class="bar active" style="height:70%;" data-label="New" data-detail="New: 56 open items across MAN, EMA, STN."></div>
+                      <div class="bar" style="height:55%;" data-label="WIP" data-detail="Work in Progress: 38 actions currently being implemented."></div>
+                      <div class="bar" style="height:35%;" data-label="Paused" data-detail="Paused: 9 actions on hold pending decisions."></div>
+                      <div class="bar" style="height:20%;" data-label="Overdue" data-detail="Overdue: 14 actions beyond target dates."></div>
+                    </div>
+                  </div>
+                  <div class="bar-info" id="bar-info">New: 56 open items across MAN, EMA, STN.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAMMS full-screen view -->
+      <div id="camm-full" class="camm-full">
+        <div class="section camm">
+          <div class="section-header">
+            <div>
+              <div class="section-title">CAMMS – Enterprise Assurance View</div>
+              <div class="muted">This is a conceptual layout of how a dedicated CAMMS page could look in Power BI: risk register, heatmap and assurance coverage.</div>
+            </div>
+            <div class="section-badge">
+              <span class="dot"></span>
+              <span>System of Record · CAMMS</span>
+            </div>
+          </div>
+
+          <div class="kpi-row">
+            <div class="kpi-card negative">
+              <div class="kpi-label">Total Open Risks</div>
+              <div class="kpi-main">
+                <div class="kpi-value">128</div>
+                <div class="kpi-unit">items</div>
+              </div>
+              <div class="kpi-footnote">All airports · filtered by slicers above</div>
+            </div>
+            <div class="kpi-card negative">
+              <div class="kpi-label">Critical / Very High</div>
+              <div class="kpi-main">
+                <div class="kpi-value">11</div>
+                <div class="kpi-unit">risks</div>
+              </div>
+              <div class="kpi-footnote">Breaching risk appetite statement</div>
+            </div>
+            <div class="kpi-card positive">
+              <div class="kpi-label">Assurance Coverage</div>
+              <div class="kpi-main">
+                <div class="kpi-value">78</div>
+                <div class="kpi-unit">% of plan</div>
+              </div>
+              <div class="kpi-footnote">Completed vs planned engagements</div>
+            </div>
+          </div>
+
+          <div class="camm-grid">
+            <!-- Left: risk register -->
+            <div>
+              <div class="chart-title">Risk Register (sample)</div>
+              <div class="chip-row">
+                <span class="chip active" data-riskchip="all">All</span>
+                <span class="chip" data-riskchip="low">Low</span>
+                <span class="chip" data-riskchip="med">Medium</span>
+                <span class="chip" data-riskchip="high">High</span>
+                <span class="chip" data-riskchip="vhigh">Very High</span>
+              </div>
+              <table class="camm-table" id="risk-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Airport</th>
+                    <th>Category</th>
+                    <th>Risk</th>
+                    <th>Tier</th>
+                    <th>Owner</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-tier="high">
+                    <td>R-0113</td>
+                    <td>MAN</td>
+                    <td>Security</td>
+                    <td>Screening capacity shortfall</td>
+                    <td><span class="risk-pill risk-high">High</span></td>
+                    <td>Head of Security</td>
+                    <td>Mitigations in progress</td>
+                  </tr>
+                  <tr data-tier="vhigh">
+                    <td>R-0147</td>
+                    <td>STN</td>
+                    <td>Resilience</td>
+                    <td>Loss of primary power to terminal</td>
+                    <td><span class="risk-pill risk-vhigh">Very High</span></td>
+                    <td>Resilience Lead</td>
+                    <td>Contingency plan under test</td>
+                  </tr>
+                  <tr data-tier="med">
+                    <td>R-0205</td>
+                    <td>EMA</td>
+                    <td>Operations</td>
+                    <td>Staffing gaps on late shifts</td>
+                    <td><span class="risk-pill risk-med">Medium</span></td>
+                    <td>Ops Duty Manager</td>
+                    <td>Actions assigned</td>
+                  </tr>
+                  <tr data-tier="low">
+                    <td>R-0251</td>
+                    <td>CAVU</td>
+                    <td>IT & Digital</td>
+                    <td>Minor reporting latency</td>
+                    <td><span class="risk-pill risk-low">Low</span></td>
+                    <td>BI Product Owner</td>
+                    <td>Accepted</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="muted">In Power BI this table would be filterable, searchable and drillable into individual CAMMS records.</div>
+            </div>
+
+            <!-- Right: heatmap and coverage -->
+            <div>
+              <div class="chart-card" style="margin-bottom:10px;">
+                <div class="chart-title">Risk Heatmap (Inherent vs Residual)</div>
+                <div class="chart-placeholder">
+                  <div class="heatmap">
+                    <div></div><div></div><div></div><div></div><div></div>
+                    <div></div><div></div><div></div><div></div><div></div>
+                    <div></div><div></div><div></div><div></div><div></div>
+                  </div>
+                </div>
+              </div>
+              <div class="chart-card">
+                <div class="chart-title">Assurance Plan vs Completed</div>
+                <div class="chart-placeholder">
+                  <div class="bar-chart">
+                    <div class="bar active" style="height:80%;" data-label="Planned" data-detail="Planned: 64 assurance engagements this FY."></div>
+                    <div class="bar" style="height:62%;" data-label="Completed" data-detail="Completed: 50 engagements signed off in CAMMS."></div>
+                    <div class="bar" style="height:25%;" data-label="Deferred" data-detail="Deferred: 14 engagements moved to next FY."></div>
+                  </div>
+                </div>
+                <div class="bar-info" id="camm-bar-info">Planned: 64 assurance engagements this FY.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 2: AIRPORT DETAIL (simpler text mock) -->
+    <div id="page-airport" class="page">
+      <p class="page-note">Airport detail page: imagine this as your drill-through. Slicers would be synced; here we just show static explanatory text.</p>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title">Airport Detail – Concept</div>
+        </div>
+        <p style="font-size: 12px; opacity: 0.8; margin-top:4px;">
+          In Power BI this page would be a drill-through from the overview. You could show:
+        </p>
+        <ul style="margin-top:8px; font-size:12px; opacity:0.85; padding-left:18px; line-height:1.5;">
+          <li>Left column: Tracker view of actions for the selected airport (timeline, owners, overdue list).</li>
+          <li>Right column: CAMMS risk register slice for the same airport (top risks, controls, assurance coverage).</li>
+          <li>Sticky header showing key airport KPIs and a breadcrumb back to the overview page.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PAGE 3: TRENDS (simpler text mock) -->
+    <div id="page-trends" class="page">
+      <p class="page-note">Trends page: long-term view across FYs. Ideal for SRB / RAB style discussions.</p>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title">Trends & Forward Look – Concept</div>
+        </div>
+        <ul style="margin-top:8px; font-size:12px; opacity:0.85; padding-left:18px; line-height:1.5%;">
+          <li>Combined tracker + CAMMS trend of overall risk exposure vs. assurance coverage.</li>
+          <li>Breakdown of recurring themes (root causes, directorates, process families).</li>
+          <li>A forward-look panel summarising planned assurance activities and open high risks.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-strip">
+      <span><span class="legend-dot"></span> On target</span>
+      <span><span class="legend-dot amber"></span> Watch list</span>
+      <span><span class="legend-dot red"></span> Breach / overdue</span>
+      <span>Prototype only – no real data. In Power BI, replicate layout with real measures + bookmarks.</span>
+    </div>
+  </div>
+
+  <script>
+    // Page navigation
+    const tabs = document.querySelectorAll('.nav-tab');
+    const pages = document.querySelectorAll('.page');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = tab.getAttribute('data-page');
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        pages.forEach(p => {
+          if (p.id === target) p.classList.add('active');
+          else p.classList.remove('active');
+        });
+      });
+    });
+
+    const splitLayout = document.getElementById('split-layout');
+    const cammFull = document.getElementById('camm-full');
+
+    // Source toggle (Tracker / CAMMS / Combined)
+    const sourceButtons = document.querySelectorAll('.source-btn');
+    const sourceSections = document.querySelectorAll('[data-source]');
+    function applyMode(mode) {
+      if (mode === 'camms') {
+        // Show dedicated CAMMS layout, hide split layout
+        if (splitLayout) splitLayout.style.display = 'none';
+        if (cammFull) cammFull.style.display = 'block';
+      } else {
+        if (splitLayout) splitLayout.style.display = 'block';
+        if (cammFull) cammFull.style.display = 'none';
+      }
+
+      // Show/hide sections inside split layout
+      sourceSections.forEach(section => {
+        const src = section.getAttribute('data-source');
+        if (mode === 'combined') {
+          section.classList.remove('hidden');
+        } else if (mode === src) {
+          section.classList.remove('hidden');
+        } else if (mode === 'camms') {
+          // in camms mode, we hide both split sections (handled above)
+          section.classList.add('hidden');
+        } else {
+          section.classList.add('hidden');
+        }
+      });
+    }
+    sourceButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const mode = btn.getAttribute('data-mode');
+        sourceButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        applyMode(mode);
+      });
+    });
+    applyMode('tracker'); // initial view
+
+    // Slicer dropdown logic
+    document.querySelectorAll('.pill-slicer').forEach(slicer => {
+      const valueSpan = slicer.querySelector('.value');
+      const options = slicer.querySelectorAll('.dropdown-option');
+
+      slicer.addEventListener('click', (e) => {
+        // if clicking option, let its handler run instead
+        if (e.target.classList.contains('dropdown-option')) return;
+        const isOpen = slicer.classList.contains('open');
+        document.querySelectorAll('.pill-slicer').forEach(s => s.classList.remove('open'));
+        if (!isOpen) slicer.classList.add('open');
+      });
+
+      options.forEach(opt => {
+        opt.addEventListener('click', (e) => {
+          e.stopPropagation();
+          options.forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+          if (valueSpan) valueSpan.textContent = opt.textContent;
+          slicer.classList.remove('open');
+          slicer.classList.add('active');
+        });
+      });
+    });
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.pill-slicer')) {
+        document.querySelectorAll('.pill-slicer').forEach(s => s.classList.remove('open'));
+      }
+    });
+
+    // Bar chart interaction (overview)
+    const bars = document.querySelectorAll('#split-layout .bar-chart .bar');
+    const barInfo = document.getElementById('bar-info');
+    bars.forEach(bar => {
+      bar.addEventListener('click', () => {
+        bars.forEach(b => b.classList.remove('active'));
+        bar.classList.add('active');
+        const detail = bar.getAttribute('data-detail');
+        if (barInfo) barInfo.textContent = detail;
+      });
+    });
+
+    // Bar chart interaction (CAMMS full)
+    const cammBars = document.querySelectorAll('#camm-full .bar-chart .bar');
+    const cammBarInfo = document.getElementById('camm-bar-info');
+    cammBars.forEach(bar => {
+      bar.addEventListener('click', () => {
+        cammBars.forEach(b => b.classList.remove('active'));
+        bar.classList.add('active');
+        const detail = bar.getAttribute('data-detail');
+        if (cammBarInfo) cammBarInfo.textContent = detail;
+      });
+    });
+
+    // Risk tier chip filters (CAMMS table demo)
+    const chips = document.querySelectorAll('.chip');
+    const rows = document.querySelectorAll('#risk-table tbody tr');
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        const tier = chip.getAttribute('data-riskchip'); // all / low / med / high / vhigh
+        chips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        rows.forEach(row => {
+          if (tier === 'all') {
+            row.style.display = '';
+          } else {
+            const rowTier = row.getAttribute('data-tier');
+            row.style.display = rowTier === tier ? '' : 'none';
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
