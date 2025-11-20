@@ -4,6 +4,22 @@
   <meta charset="UTF-8" />
   <title>MAG Assurance Command Centre – Interactive Mockup</title>
   <style>
+    :root {
+      /* MAG / Journey Makers / RISE palette – tweak as needed */
+      --mag-navy: #001b3c;
+      --mag-navy-soft: #042149;
+
+      --jm-pink: #e23a71;
+      --jm-orange: #f7941d;
+      --jm-gradient: linear-gradient(135deg, #e23a71, #f7941d);
+
+      --rise-green: #17b894;
+      --rise-blue: #0082b3;
+
+      --combined-blue-start: #60a5fa;
+      --combined-blue-end: #38bdf8;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -11,7 +27,7 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
     body {
-      background: radial-gradient(circle at top left, #1b2a4a 0, #050712 55%, #020308 100%);
+      background: radial-gradient(circle at top left, var(--mag-navy-soft) 0, #050712 55%, #020308 100%);
       color: #f7f9fc;
       padding: 24px;
     }
@@ -20,9 +36,9 @@
       margin: 0 auto;
       border-radius: 18px;
       padding: 18px 22px 24px 22px;
-      background: rgba(4, 10, 24, 0.92);
+      background: rgba(0, 11, 35, 0.95);
       box-shadow: 0 24px 60px rgba(0,0,0,0.65);
-      border: 1px solid rgba(132, 178, 255, 0.25);
+      border: 1px solid rgba(148, 187, 255, 0.3);
       backdrop-filter: blur(18px);
     }
     .header-row {
@@ -40,6 +56,16 @@
       font-size: 12px;
       opacity: 0.7;
       margin-top: 4px;
+    }
+
+    .brand-strip {
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-strip img {
+      display: block;
     }
 
     /* Top navigation between mock "pages" */
@@ -63,10 +89,10 @@
       opacity: 0.75;
     }
     .nav-tab.active {
-      background: linear-gradient(135deg, #60a5fa, #38bdf8);
+      background: var(--jm-gradient);
       color: #041118;
       font-weight: 600;
-      box-shadow: 0 0 16px rgba(56, 189, 248, 0.7);
+      box-shadow: 0 0 16px rgba(244, 114, 182, 0.6);
       opacity: 1;
     }
 
@@ -74,7 +100,7 @@
       display: inline-flex;
       border-radius: 999px;
       padding: 4px;
-      background: radial-gradient(circle at top, #1f335d, #050915);
+      background: radial-gradient(circle at top, var(--mag-navy-soft), #050915);
       border: 1px solid rgba(113, 180, 255, 0.5);
     }
     .source-toggle button {
@@ -92,12 +118,24 @@
       transition: all 0.18s ease-out;
     }
     .source-toggle button.active {
-      background: linear-gradient(135deg, #39e58c, #0bbf74);
-      color: #041118;
       font-weight: 600;
-      box-shadow: 0 0 16px rgba(38, 219, 132, 0.8);
       opacity: 1;
+      color: #041118;
     }
+    /* Different vibes per mode */
+    .source-toggle button.active[data-mode="tracker"] {
+      background: var(--jm-gradient);
+      box-shadow: 0 0 16px rgba(248, 148, 58, 0.7);
+    }
+    .source-toggle button.active[data-mode="camms"] {
+      background: linear-gradient(135deg, var(--rise-green), var(--rise-blue));
+      box-shadow: 0 0 16px rgba(23, 184, 148, 0.7);
+    }
+    .source-toggle button.active[data-mode="combined"] {
+      background: linear-gradient(135deg, var(--combined-blue-start), var(--combined-blue-end));
+      box-shadow: 0 0 16px rgba(96, 165, 250, 0.7);
+    }
+
     .source-toggle span.dot {
       width: 7px;
       height: 7px;
@@ -147,6 +185,39 @@
     .pill-slicer.active {
       border-color: #38bdf8;
       box-shadow: 0 0 14px rgba(59,130,246,0.75);
+    }
+
+    /* Airport pill – space + icon */
+    .pill-slicer[data-slicer="airport"] {
+      padding-left: 42px;
+    }
+    .pill-slicer[data-slicer="airport"]::before {
+      content: "";
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.95;
+    }
+    .pill-slicer[data-slicer="airport"][data-current-airport="all"]::before {
+      background-image: url("logos/MAG.png"); /* or MAG-group.png */
+    }
+    .pill-slicer[data-slicer="airport"][data-current-airport="MAN"]::before {
+      background-image: url("logos/MAN.png");
+    }
+    .pill-slicer[data-slicer="airport"][data-current-airport="EMA"]::before {
+      background-image: url("logos/EMA.png");
+    }
+    .pill-slicer[data-slicer="airport"][data-current-airport="STN"]::before {
+      background-image: url("logos/STN.png");
+    }
+    .pill-slicer[data-slicer="airport"][data-current-airport="CAVU"]::before {
+      background-image: url("logos/CAVU.png");
     }
 
     .dropdown-menu {
@@ -520,6 +591,11 @@
       <div class="title-block">
         <h1>MAG Assurance Command Centre</h1>
         <p>Unified view of tracker-based actions and CAMMS enterprise risk data</p>
+        <div class="brand-strip">
+          <!-- Swap filenames to whatever you upload -->
+          <img src="logos/MAG-group.png" alt="MAG Group" style="height:22px;">
+          <img src="logos/RISE.png" alt="RISE Safety &amp; Resilience" style="height:26px;">
+        </div>
       </div>
       <div>
         <div class="nav-tabs">
@@ -537,7 +613,7 @@
 
     <div class="slicer-row">
       <!-- Airport -->
-      <div class="pill-slicer" data-slicer="airport">
+      <div class="pill-slicer" data-slicer="airport" data-current-airport="all">
         <div>
           <span class="label">Airport</span><br>
           <span class="value">All (MAN · EMA · STN · CAVU)</span>
@@ -546,11 +622,11 @@
           <path fill="currentColor" d="M7 10l5 5 5-5H7z" />
         </svg>
         <div class="dropdown-menu">
-          <div class="dropdown-option selected">All (MAN · EMA · STN · CAVU)</div>
-          <div class="dropdown-option">MAN – Manchester</div>
-          <div class="dropdown-option">EMA – East Midlands</div>
-          <div class="dropdown-option">STN – London Stansted</div>
-          <div class="dropdown-option">CAVU – Group / Digital</div>
+          <div class="dropdown-option selected" data-airport="all">All (MAN · EMA · STN · CAVU)</div>
+          <div class="dropdown-option" data-airport="MAN">MAN – Manchester</div>
+          <div class="dropdown-option" data-airport="EMA">EMA – East Midlands</div>
+          <div class="dropdown-option" data-airport="STN">STN – London Stansted</div>
+          <div class="dropdown-option" data-airport="CAVU">CAVU – Group / Digital</div>
         </div>
       </div>
 
@@ -565,25 +641,25 @@
         </svg>
         <div class="dropdown-menu">
           <div class="dropdown-option selected">All Functions</div>
-          <div class="dropdown-option">Landside Operations & Car Parks</div>
-          <div class="dropdown-option">Terminal Operations & Customer Experience</div>
+          <div class="dropdown-option">Landside Operations &amp; Car Parks</div>
+          <div class="dropdown-option">Terminal Operations &amp; Customer Experience</div>
           <div class="dropdown-option">Airfield Operations</div>
           <div class="dropdown-option">Security</div>
-          <div class="dropdown-option">Engineering & Asset Management</div>
-          <div class="dropdown-option">Fire & Rescue</div>
-          <div class="dropdown-option">Health, Safety & Wellbeing</div>
-          <div class="dropdown-option">Compliance & Assurance</div>
-          <div class="dropdown-option">Resilience & Emergency Planning</div>
-          <div class="dropdown-option">Airline Relations & Commercial</div>
-          <div class="dropdown-option">Retail, F&amp;B & Car Rental</div>
-          <div class="dropdown-option">Cargo & Logistics</div>
-          <div class="dropdown-option">Facilities Management & Cleaning</div>
-          <div class="dropdown-option">IT & Digital / ServiceNow</div>
-          <div class="dropdown-option">Projects & Transformation</div>
-          <div class="dropdown-option">HR & People</div>
+          <div class="dropdown-option">Engineering &amp; Asset Management</div>
+          <div class="dropdown-option">Fire &amp; Rescue</div>
+          <div class="dropdown-option">Health, Safety &amp; Wellbeing</div>
+          <div class="dropdown-option">Compliance &amp; Assurance</div>
+          <div class="dropdown-option">Resilience &amp; Emergency Planning</div>
+          <div class="dropdown-option">Airline Relations &amp; Commercial</div>
+          <div class="dropdown-option">Retail, F&amp;B &amp; Car Rental</div>
+          <div class="dropdown-option">Cargo &amp; Logistics</div>
+          <div class="dropdown-option">Facilities Management &amp; Cleaning</div>
+          <div class="dropdown-option">IT &amp; Digital / ServiceNow</div>
+          <div class="dropdown-option">Projects &amp; Transformation</div>
+          <div class="dropdown-option">HR &amp; People</div>
           <div class="dropdown-option">Finance</div>
-          <div class="dropdown-option">Sustainability & Environment</div>
-          <div class="dropdown-option">Legal & Governance</div>
+          <div class="dropdown-option">Sustainability &amp; Environment</div>
+          <div class="dropdown-option">Legal &amp; Governance</div>
         </div>
       </div>
 
@@ -747,7 +823,7 @@
                     <div class="kpi-value">72</div>
                     <div class="kpi-unit">this FY</div>
                   </div>
-                  <div class="kpi-footnote">Includes assurance & audit activity</div>
+                  <div class="kpi-footnote">Includes assurance &amp; audit activity</div>
                 </div>
                 <div class="kpi-card positive">
                   <div class="kpi-label">Policy Adherence</div>
@@ -883,7 +959,7 @@
                   <tr data-tier="low">
                     <td>R-0251</td>
                     <td>CAVU</td>
-                    <td>IT & Digital</td>
+                    <td>IT &amp; Digital</td>
                     <td>Minor reporting latency</td>
                     <td><span class="risk-pill risk-low">Low</span></td>
                     <td>BI Product Owner</td>
@@ -946,7 +1022,7 @@
       <p class="page-note">Trends page: long-term view across FYs. Ideal for SRB / RAB style discussions.</p>
       <div class="section">
         <div class="section-header">
-          <div class="section-title">Trends & Forward Look – Concept</div>
+          <div class="section-title">Trends &amp; Forward Look – Concept</div>
         </div>
         <ul style="margin-top:8px; font-size:12px; opacity:0.85; padding-left:18px; line-height:1.5;">
           <li>Combined tracker + CAMMS trend of overall risk exposure vs. assurance coverage.</li>
@@ -1040,6 +1116,13 @@
           options.forEach(o => o.classList.remove('selected'));
           opt.classList.add('selected');
           if (valueSpan) valueSpan.textContent = opt.textContent;
+
+          // If this is the Airport slicer, store the selected code
+          const airportCode = opt.getAttribute('data-airport');
+          if (airportCode && slicer.dataset.slicer === 'airport') {
+            slicer.setAttribute('data-current-airport', airportCode);
+          }
+
           slicer.classList.remove('open');
           slicer.classList.add('active');
         });
@@ -1098,4 +1181,3 @@
   </script>
 </body>
 </html>
-
