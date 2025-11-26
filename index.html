@@ -329,7 +329,7 @@
     .dot-amber { background: #eab308; }
     .dot-red   { background: #fb4b63; }
 
-    /* ---------- PLACEHOLDER PAGES ---------- */
+    /* ---------- PLACEHOLDER TEXT BLOCKS ---------- */
 
     .placeholder {
       font-size: 13px;
@@ -348,6 +348,35 @@
 
     .placeholder-list li {
       margin-bottom: 4px;
+    }
+
+    /* ---------- SIMPLE TABLE (CAMMS) ---------- */
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 11px;
+    }
+
+    th, td {
+      padding: 6px 8px;
+      text-align: left;
+    }
+
+    th {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #aab4e0;
+      border-bottom: 1px solid rgba(148, 163, 210, 0.4);
+    }
+
+    tbody tr:nth-child(even) {
+      background: rgba(15,23,42,0.7);
+    }
+
+    td {
+      color: #d1d5f0;
     }
   </style>
 </head>
@@ -490,7 +519,7 @@
           <div class="panel-header">
             <div>
               <div class="panel-title">Enterprise Assurance (CAMMS)</div>
-              <div class="panel-subtitle">Conceptual CAMMS layout – prototype only</div>
+              <div class="panel-subtitle">Conceptual CAMMS layout – overview slice</div>
             </div>
           </div>
 
@@ -568,7 +597,7 @@
           </p>
           <ul class="placeholder-list">
             <li>Left column – timeline of open vs closed actions, owners, overdue list.</li>
-            <li>Right column – CAMMS risk register for that airport with controls & coverage.</li>
+            <li>Right column – CAMMS risk register for that airport with controls &amp; coverage.</li>
             <li>Sticky header with airport KPIs + breadcrumb back to Overview.</li>
           </ul>
         </div>
@@ -617,40 +646,173 @@
 
     <!-- ================= CAMMS VIEW PAGE ================= -->
     <section id="camms" class="page">
-      <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">CAMMS View – Concept</div>
-          <div class="panel-subtitle">Enterprise risk register / assurance view</div>
+      <div class="two-column">
+        <!-- Left: CAMMS KPIs + heatmap -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">CAMMS – Enterprise Assurance View</div>
+            <div class="panel-subtitle">Risk register + heatmap + coverage</div>
+          </div>
+
+          <div class="kpi-row">
+            <div class="kpi-card">
+              <div class="kpi-label">Total open risks</div>
+              <div class="kpi-value">128</div>
+              <div class="kpi-footnote">All airports – filtered by slicers above</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Critical / very high</div>
+              <div class="kpi-value">11</div>
+              <div class="kpi-footnote">Breaching risk appetite statement</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Assurance coverage</div>
+              <div class="kpi-value">78%</div>
+              <div class="kpi-footnote">Completed vs planned engagements</div>
+            </div>
+          </div>
+
+          <div class="panel" style="padding:10px 12px 12px; margin-top:8px;">
+            <div class="panel-header">
+              <span class="panel-title">Risk heatmap (inherent vs residual)</span>
+            </div>
+            <canvas id="cammsHeatmapChart"></canvas>
+          </div>
         </div>
-        <div class="placeholder">
-          <p>
-            Dedicated CAMMS view for risk-centric discussion:
-          </p>
-          <ul class="placeholder-list">
-            <li>KPIs: <strong>Total open risks, Critical / Very High, Assurance coverage</strong>.</li>
-            <li>Interactive risk heatmap (inherent vs residual).</li>
-            <li>Drill-through into individual CAMMS records from the table.</li>
-          </ul>
+
+        <!-- Right: Coverage + sample risk register -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Assurance Plan vs Completed</div>
+            <div class="panel-subtitle">Sample layout for CAMMS-linked assurance activity</div>
+          </div>
+          <div class="panel" style="padding:10px 12px 12px;">
+            <canvas id="cammsCoverageChart"></canvas>
+          </div>
+
+          <div class="panel-subtitle" style="margin-top:10px;">Sample risk register (drill-through in real build)</div>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Airport</th>
+                <th>Category</th>
+                <th>Risk</th>
+                <th>Tier</th>
+                <th>Owner</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>R-0113</td>
+                <td>MAN</td>
+                <td>Security</td>
+                <td>Screening capacity shortfall</td>
+                <td>High</td>
+                <td>Head of Security</td>
+                <td>Mitigations in progress</td>
+              </tr>
+              <tr>
+                <td>R-0147</td>
+                <td>STN</td>
+                <td>Resilience</td>
+                <td>Loss of primary power to terminal</td>
+                <td>Very High</td>
+                <td>Resilience Lead</td>
+                <td>Contingency plan under test</td>
+              </tr>
+              <tr>
+                <td>R-0205</td>
+                <td>EMA</td>
+                <td>Operations</td>
+                <td>Staffing gaps on late shifts</td>
+                <td>Medium</td>
+                <td>Ops Duty Manager</td>
+                <td>Actions assigned</td>
+              </tr>
+              <tr>
+                <td>R-0251</td>
+                <td>CAVU</td>
+                <td>IT &amp; Digital</td>
+                <td>Minor reporting latency</td>
+                <td>Low</td>
+                <td>BI Product Owner</td>
+                <td>Accepted</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
 
     <!-- ================= COMBINED PAGE ================= -->
     <section id="combined" class="page">
-      <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">Combined View – Concept</div>
-          <div class="panel-subtitle">Single pane of glass – tracker + CAMMS</div>
+      <div class="two-column">
+        <!-- Left: Tracker summary -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Combined View – Tracker Summary</div>
+            <div class="panel-subtitle">Actions across MAN · EMA · STN</div>
+          </div>
+
+          <div class="kpi-row">
+            <div class="kpi-card">
+              <div class="kpi-label">Open actions</div>
+              <div class="kpi-value">56</div>
+              <div class="kpi-footnote">All airports, all themes</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">On track</div>
+              <div class="kpi-value">64%</div>
+              <div class="kpi-footnote">Within agreed timeframe</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Overdue / at risk</div>
+              <div class="kpi-value">36%</div>
+              <div class="kpi-footnote">Watch list + breach</div>
+            </div>
+          </div>
+
+          <div class="panel" style="padding:10px 12px 12px;">
+            <div class="panel-header">
+              <span class="panel-title">Unified action status</span>
+            </div>
+            <canvas id="combinedActionsChart"></canvas>
+          </div>
         </div>
-        <div class="placeholder">
-          <p>
-            The destination state: <strong>SharePoint task hub + CAMMS</strong> feeding one combined dashboard.
-          </p>
-          <ul class="placeholder-list">
-            <li>Side-by-side action KPIs and enterprise risk KPIs.</li>
-            <li>Unified action status across MAN, EMA, STN (click bars to drill).</li>
-            <li>RLS-style scoping so airports only see their slice; Group sees everything.</li>
-          </ul>
+
+        <!-- Right: CAMMS summary -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Combined View – Risk Summary</div>
+            <div class="panel-subtitle">CAMMS + trackers side-by-side</div>
+          </div>
+
+          <div class="kpi-row">
+            <div class="kpi-card">
+              <div class="kpi-label">Critical risks</div>
+              <div class="kpi-value">3</div>
+              <div class="kpi-footnote">Above risk appetite threshold</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">High / medium</div>
+              <div class="kpi-value">41</div>
+              <div class="kpi-footnote">Requires monitoring</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Planned assurance</div>
+              <div class="kpi-value">64</div>
+              <div class="kpi-footnote">Engagements this FY</div>
+            </div>
+          </div>
+
+          <div class="panel" style="padding:10px 12px 12px;">
+            <div class="panel-header">
+              <span class="panel-title">Risk vs assurance coverage</span>
+            </div>
+            <canvas id="combinedRiskChart"></canvas>
+          </div>
         </div>
       </div>
     </section>
@@ -664,13 +826,13 @@
 
     navButtons.forEach(btn => {
       btn.addEventListener('click', () => {
-        const page = btn.dataset.page;
+        const pageId = btn.dataset.page;
 
         navButtons.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
 
         pages.forEach(p => {
-          if (p.id === page) {
+          if (p.id === pageId) {
             p.classList.add('page-active');
           } else {
             p.classList.remove('page-active');
@@ -679,7 +841,7 @@
       });
     });
 
-    // ----------- CHARTS (OVERVIEW) -----------
+    // ----------- COLOURS FOR CHARTS -----------
     const chartColors = {
       teal: '#22c5f5',
       green: '#22c55e',
@@ -688,6 +850,8 @@
       purple: '#a855f7',
       axis: '#64729b'
     };
+
+    // ----------- OVERVIEW CHARTS -----------
 
     // trendChart – manual review
     const trendCtx = document.getElementById('trendChart');
@@ -771,7 +935,8 @@
       }
     });
 
-    // ----------- PLAY WITH DATA -----------
+    // ----------- PLAY WITH DATA (OVERVIEW) -----------
+
     const inputOverdue = document.getElementById('input-overdue');
     const inputCompletion = document.getElementById('input-completion');
     const playButton = document.getElementById('play-button');
@@ -790,7 +955,6 @@
       kpiCompletion.textContent = `${newCompletion}%`;
 
       // Update charts to react loosely to the new inputs
-      // (purely illustrative logic)
       const scaleFactor = Math.max(0.3, 1 - newCompletion / 150);
       trendChart.data.datasets[0].data = [18, 21, 19, 15, 14, 10 + Math.round(newOverdue * 0.25 * scaleFactor)];
       trendChart.update();
@@ -803,6 +967,111 @@
         Math.max(0, newOverdue - Math.round(newOverdue * 0.90))
       ];
       ageChart.update();
+    });
+
+    // ----------- CAMMS PAGE CHARTS -----------
+
+    const cammsHeatCtx = document.getElementById('cammsHeatmapChart');
+    const cammsHeatmapChart = new Chart(cammsHeatCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Critical', 'High', 'Medium', 'Low'],
+        datasets: [
+          {
+            label: 'Inherent',
+            data: [11, 34, 48, 35],
+            backgroundColor: 'rgba(248, 113, 113, 0.8)'
+          },
+          {
+            label: 'Residual',
+            data: [5, 24, 40, 32],
+            backgroundColor: 'rgba(56, 189, 248, 0.9)'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: { color: chartColors.axis, font: { size: 11 } }
+          }
+        },
+        scales: {
+          x: { ticks: { color: chartColors.axis }, grid: { display:false } },
+          y: { ticks: { color: chartColors.axis }, grid: { color:'rgba(55,65,81,0.45)' } }
+        }
+      }
+    });
+
+    const cammsCovCtx = document.getElementById('cammsCoverageChart');
+    const cammsCoverageChart = new Chart(cammsCovCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Planned', 'Completed'],
+        datasets: [{
+          label: 'Engagements',
+          data: [64, 50],
+          backgroundColor: [chartColors.teal, chartColors.green]
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          x: { ticks: { color: chartColors.axis }, grid: { display:false } },
+          y: { ticks: { color: chartColors.axis }, grid: { color:'rgba(55,65,81,0.45)' } }
+        }
+      }
+    });
+
+    // ----------- COMBINED PAGE CHARTS -----------
+
+    const combActionsCtx = document.getElementById('combinedActionsChart');
+    const combinedActionsChart = new Chart(combActionsCtx, {
+      type: 'bar',
+      data: {
+        labels: ['On track', 'At risk', 'Overdue'],
+        datasets: [{
+          label: 'Actions',
+          data: [36, 12, 8],
+          backgroundColor: [chartColors.green, chartColors.amber, chartColors.pink]
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { color: chartColors.axis }, grid: { display:false } },
+          y: { ticks: { color: chartColors.axis }, grid: { color:'rgba(55,65,81,0.45)' } }
+        }
+      }
+    });
+
+    const combRiskCtx = document.getElementById('combinedRiskChart');
+    const combinedRiskChart = new Chart(combRiskCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Critical', 'High', 'Medium'],
+        datasets: [{
+          label: 'Risks',
+          data: [3, 18, 23],
+          backgroundColor: [chartColors.pink, chartColors.amber, chartColors.teal]
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { color: chartColors.axis }, grid: { display:false } },
+          y: { ticks: { color: chartColors.axis }, grid: { color:'rgba(55,65,81,0.45)' } }
+        }
+      }
     });
   </script>
 </body>
